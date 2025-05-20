@@ -65,20 +65,23 @@ const Reviews = () => {
     <Container maxWidth="md">
       <Box sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Отзывы
+          Відгуки
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit} sx={{ mb: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Залишити відгук
+          </Typography>
           <TextField
             fullWidth
-            label="Ваше имя"
+            label="Ваше ім'я"
             value={newReview.name}
             onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
             margin="normal"
             required
           />
-          <Box sx={{ my: 2 }}>
-            <Typography component="legend">Оценка</Typography>
+          <Box sx={{ mt: 2, mb: 2 }}>
+            <Typography component="legend">Оцінка</Typography>
             <Rating
               value={newReview.rating}
               onChange={(_, value) => setNewReview({ ...newReview, rating: value || 0 })}
@@ -86,7 +89,7 @@ const Reviews = () => {
           </Box>
           <TextField
             fullWidth
-            label="Ваш отзыв"
+            label="Ваш відгук"
             multiline
             rows={4}
             value={newReview.comment}
@@ -100,7 +103,7 @@ const Reviews = () => {
             color="primary"
             sx={{ mt: 2 }}
           >
-            Оставить отзыв
+            Опублікувати відгук
           </Button>
         </Box>
 
@@ -115,7 +118,7 @@ const Reviews = () => {
                     {review.comment}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    {new Date(review.date).toLocaleDateString()}
+                    {new Date(review.date).toLocaleDateString('uk-UA')}
                   </Typography>
                 </CardContent>
               </Card>

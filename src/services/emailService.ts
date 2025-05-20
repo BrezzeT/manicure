@@ -18,41 +18,46 @@ interface EmailParamsConfirmed {
   date: string;
 }
 
-export const sendBookingConfirmation = async (params: EmailParamsBooking) => {
+const sendEmail = async (templateId: string, templateParams: any) => {
   try {
-    await emailjs.send(
-      "service_l9m9d0p", // Ваш Service ID
-      "template_44cbgqk", // Ваш Template ID для новой записи
+    const response = await emailjs.send(
+      "service_l9m9d0p",
+      templateId,
       {
-        name: params.to_name,
-        email: params.to_email,
-        date: params.date,
-        status: params.status,
-        phone: params.phone,
-        comment: params.comment || 'Нет',
+        ...templateParams,
+        reply_to: "your-email@domain.com", // Замените на ваш email
+        from_name: "Манікюрний салон",
+        subject: "Підтвердження запису",
+        custom_headers: {
+          "X-Priority": "1",
+          "X-MSMail-Priority": "High",
+          "Importance": "high",
+          "X-Mailer": "Manicure Booking System"
+        }
       }
     );
-    return true;
+    return response.status === 200;
   } catch (error) {
-    console.error('Error sending booking confirmation email:', error);
+    console.error('Error sending email:', error);
     return false;
   }
 };
 
+export const sendBookingConfirmation = async (params: EmailParamsBooking) => {
+  return sendEmail("template_44cbgqk", {
+    name: params.to_name,
+    email: params.to_email,
+    date: params.date,
+    status: params.status,
+    phone: params.phone,
+    comment: params.comment || 'Нет',
+  });
+};
+
 export const sendBookingConfirmedEmail = async (params: EmailParamsConfirmed) => {
-  try {
-    await emailjs.send(
-      "service_l9m9d0p", // Ваш Service ID
-      "template_n9yk5mr", // <-- Вставлен реальный Template ID для подтверждения
-      {
-        to_name: params.to_name, // Соответствует {{to_name}} в шаблоне подтверждения
-        date: params.date,       // Соответствует {{date}} в шаблоне подтверждения
-        email: params.to_email,  // На всякий случай, если используется в шаблоне
-      }
-    );
-    return true;
-  } catch (error) {
-    console.error('Error sending booking confirmed email:', error);
-    return false;
-  }
+  return sendEmail("template_n9yk5mr", {
+    to_name: params.to_name,
+    date: params.date,
+    email: params.to_email,
+  });
 }; 

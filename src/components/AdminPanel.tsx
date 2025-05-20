@@ -16,7 +16,10 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  MenuItem
+  MenuItem,
+  Card,
+  CardContent,
+  useMediaQuery
 } from '@mui/material';
 import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -36,6 +39,7 @@ const AdminPanel = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   useEffect(() => {
     fetchBookings();
@@ -76,12 +80,11 @@ const AdminPanel = () => {
         });
         setOpenDialog(false);
         fetchBookings();
-        // Отправка письма при подтверждении
         if (selectedBooking.status === 'confirmed') {
           await sendBookingConfirmedEmail({
             to_email: selectedBooking.email,
             to_name: selectedBooking.name,
-            date: new Date(selectedBooking.date).toLocaleString(),
+            date: new Date(selectedBooking.date).toLocaleString('uk-UA'),
           });
         }
       } catch (error) {
@@ -94,62 +97,111 @@ const AdminPanel = () => {
     <Container maxWidth="lg">
       <Box sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Панель администратора
+          Панель адміністратора
         </Typography>
 
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Имя</TableCell>
-                <TableCell>Телефон</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Дата</TableCell>
-                <TableCell>Статус</TableCell>
-                <TableCell>Действия</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {bookings.map((booking) => (
-                <TableRow key={booking.id}>
-                  <TableCell>{booking.name}</TableCell>
-                  <TableCell>{booking.phone}</TableCell>
-                  <TableCell>{booking.email}</TableCell>
-                  <TableCell>{new Date(booking.date).toLocaleString()}</TableCell>
-                  <TableCell>{booking.status === 'pending' ? 'Ожидает' : booking.status === 'confirmed' ? 'Подтверждено' : 'Отменено'}</TableCell>
-                  <TableCell>
+        {isMobile ? (
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {bookings.map((booking) => (
+              <Card key={booking.id} sx={{ width: '100%' }}>
+                <CardContent>
+                  <Typography variant="subtitle1" fontWeight={600}>
+                    Ім'я: <span style={{ fontWeight: 400 }}>{booking.name}</span>
+                  </Typography>
+                  <Typography variant="body2">
+                    Телефон: <span style={{ fontWeight: 500 }}>{booking.phone}</span>
+                  </Typography>
+                  <Typography variant="body2">
+                    Email: <span style={{ fontWeight: 500 }}>{booking.email}</span>
+                  </Typography>
+                  <Typography variant="body2">
+                    Дата: <span style={{ fontWeight: 500 }}>{new Date(booking.date).toLocaleString('uk-UA')}</span>
+                  </Typography>
+                  <Typography variant="body2">
+                    Статус: <span style={{ fontWeight: 500 }}>{booking.status === 'pending' ? 'Очікує' : booking.status === 'confirmed' ? 'Підтверджено' : 'Скасовано'}</span>
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
                     <Button
                       variant="contained"
                       color="primary"
                       size="small"
                       onClick={() => handleEdit(booking)}
-                      sx={{ mr: 1 }}
+                      sx={{ flex: 1 }}
                     >
-                      Редактировать
+                      Редагувати
                     </Button>
                     <Button
                       variant="contained"
                       color="error"
                       size="small"
                       onClick={() => handleDelete(booking.id)}
+                      sx={{ flex: 1 }}
                     >
-                      Удалить
+                      Видалити
                     </Button>
-                  </TableCell>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
+        ) : (
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Ім'я</TableCell>
+                  <TableCell>Телефон</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Дата</TableCell>
+                  <TableCell>Статус</TableCell>
+                  <TableCell>Дії</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {bookings.map((booking) => (
+                  <TableRow key={booking.id}>
+                    <TableCell>{booking.name}</TableCell>
+                    <TableCell>{booking.phone}</TableCell>
+                    <TableCell>{booking.email}</TableCell>
+                    <TableCell>{new Date(booking.date).toLocaleString('uk-UA')}</TableCell>
+                    <TableCell>
+                      {booking.status === 'pending' ? 'Очікує' : 
+                        booking.status === 'confirmed' ? 'Підтверджено' : 'Скасовано'}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => handleEdit(booking)}
+                        sx={{ mr: 1 }}
+                      >
+                        Редагувати
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        size="small"
+                        onClick={() => handleDelete(booking.id)}
+                      >
+                        Видалити
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
 
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>Редактировать запись</DialogTitle>
+          <DialogTitle>Редагувати запис</DialogTitle>
           <DialogContent>
             {selectedBooking && (
               <Box sx={{ pt: 2 }}>
                 <TextField
                   fullWidth
-                  label="Имя"
+                  label="Ім'я"
                   value={selectedBooking.name}
                   onChange={(e) => setSelectedBooking({ ...selectedBooking, name: e.target.value })}
                   margin="normal"
@@ -170,7 +222,7 @@ const AdminPanel = () => {
                 />
                 <TextField
                   fullWidth
-                  label="Комментарий"
+                  label="Коментар"
                   multiline
                   rows={4}
                   value={selectedBooking.comment}
@@ -185,17 +237,17 @@ const AdminPanel = () => {
                   onChange={(e) => setSelectedBooking({ ...selectedBooking, status: e.target.value })}
                   margin="normal"
                 >
-                  <MenuItem value="pending">Ожидает</MenuItem>
-                  <MenuItem value="confirmed">Подтверждено</MenuItem>
-                  <MenuItem value="cancelled">Отменено</MenuItem>
+                  <MenuItem value="pending">Очікує</MenuItem>
+                  <MenuItem value="confirmed">Підтверджено</MenuItem>
+                  <MenuItem value="cancelled">Скасовано</MenuItem>
                 </TextField>
               </Box>
             )}
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpenDialog(false)}>Отмена</Button>
+            <Button onClick={() => setOpenDialog(false)}>Скасувати</Button>
             <Button onClick={handleSaveEdit} variant="contained" color="primary">
-              Сохранить
+              Зберегти
             </Button>
           </DialogActions>
         </Dialog>
