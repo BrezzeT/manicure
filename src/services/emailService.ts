@@ -25,7 +25,7 @@ const sendEmail = async (templateId: string, templateParams: any) => {
       templateId,
       {
         ...templateParams,
-        reply_to: "your-email@domain.com", // Замените на ваш email
+        reply_to: "your-email@domain.com", 
         from_name: "Манікюрний салон",
         subject: "Підтвердження запису",
         custom_headers: {

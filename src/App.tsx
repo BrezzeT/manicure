@@ -5,14 +5,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SpaIcon from '@mui/icons-material/Spa';
 import BookingForm from './components/BookingForm';
 import Reviews from './components/Reviews';
-import AdminPanel from './components/AdminPanel';
 import LoginPage from './components/LoginPage';
 import PrivateRoute from './components/PrivateRoute';
+import HomePage from './components/HomePage';
 
 const navLinks = [
-  { label: 'Запис', path: '/' },
+  { label: 'Головна', path: '/' },
+  { label: 'Запис', path: '/booking' },
   { label: 'Відгуки', path: '/reviews' },
-  { label: 'Вхід для адміна', path: '/login' },
 ];
 
 function App() {
@@ -87,12 +87,10 @@ function App() {
 
       <Container>
         <Routes>
-          <Route path="/" element={<BookingForm />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/booking" element={<BookingForm />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/admin" element={<PrivateRoute />}>
-             <Route index element={<AdminPanel />} />
-          </Route>
         </Routes>
       </Container>
     </Router>
