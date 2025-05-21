@@ -1,23 +1,16 @@
 import React from 'react';
-import { Box, Typography, Button, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme, useMediaQuery, Card, CardContent, Divider } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Typography, Button, Container, Paper, Card, CardContent, Divider, useTheme, useMediaQuery } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import SpaIcon from '@mui/icons-material/Spa';
-import { useNavigate } from 'react-router-dom';
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import PlaceIcon from '@mui/icons-material/Place';
 import Gallery from './Gallery';
-
-const gradientBg = 'linear-gradient(120deg, #e0aaff 0%, #b8c0ff 100%)';
-
-const PriceTable = styled(TableContainer)(({ theme }) => ({
-  background: 'rgba(255,255,255,0.95)',
-  borderRadius: 24,
-  boxShadow: '0 4px 24px rgba(176, 120, 255, 0.10)',
-  marginTop: theme.spacing(4),
-  marginBottom: theme.spacing(6),
-}));
+import { useNavigate } from 'react-router-dom';
 
 const priceData = [
   {
-    size: 'S (довжина 1-2)',
+    size: 'S (1-2)',
     nar: [
       { label: 'Без дизайну', price: 450 },
       { label: 'З дизайном', price: 500 },
@@ -28,7 +21,7 @@ const priceData = [
     ],
   },
   {
-    size: 'M (довжина 3-4)',
+    size: 'M (3-4)',
     nar: [
       { label: 'Без дизайну', price: 550 },
       { label: 'З дизайном', price: 600 },
@@ -39,7 +32,7 @@ const priceData = [
     ],
   },
   {
-    size: 'L (довжина 5-6)',
+    size: 'L (5-6)',
     nar: [
       { label: 'Без дизайну', price: 650 },
       { label: 'З дизайном', price: 700 },
@@ -50,7 +43,7 @@ const priceData = [
     ],
   },
   {
-    size: 'XL (довжина 7+)',
+    size: 'XL (7+)',
     nar: [
       { label: 'Без дизайну', price: 700 },
       { label: 'З дизайном', price: 800 },
@@ -68,23 +61,29 @@ const HomePage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box sx={{ minHeight: '100vh', background: gradientBg, pb: 8 }}>
+    <Box sx={{ minHeight: '100vh', background: 'linear-gradient(120deg, #f5f7fa 0%, #e0c3fc 100%)', pb: 8 }}>
       {/* Hero Section */}
-      <Box sx={{ pt: 6, pb: 4, textAlign: 'center', color: '#fff', position: 'relative' }}>
-        <SpaIcon sx={{ fontSize: 60, mb: 2, color: '#fff', filter: 'drop-shadow(0 2px 8px #b8c0ff)' }} />
+      <Box sx={{ pt: { xs: 6, md: 10 }, pb: { xs: 4, md: 8 }, textAlign: 'center', color: '#6c47ff', position: 'relative' }}>
+        <SpaIcon sx={{ fontSize: 70, mb: 2, color: '#b8c0ff', filter: 'drop-shadow(0 2px 8px #b8c0ff)' }} />
         <Typography variant="h2" sx={{ fontWeight: 900, letterSpacing: 2, mb: 2, fontSize: { xs: '2.2rem', md: '3.5rem' } }}>
-          MAGIC STUDIO
+          У Альооки
         </Typography>
-        <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: '#fff', textShadow: '0 2px 8px #b8c0ff' }}>
+        <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: '#6c47ff', textShadow: '0 2px 8px #b8c0ff' }}>
           Манікюр
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4, mb: 2, flexWrap: 'wrap' }}>
-          <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>
-            num.9999999999999
-          </Typography>
-          <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>
-            num.9999999999999
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <PhoneIphoneIcon sx={{ color: '#6c47ff' }} />
+            <Typography variant="h6" sx={{ color: '#6c47ff', fontWeight: 700 }}>
+              9999999999999
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <PhoneIphoneIcon sx={{ color: '#6c47ff' }} />
+            <Typography variant="h6" sx={{ color: '#6c47ff', fontWeight: 700 }}>
+              9999999999999
+            </Typography>
+          </Box>
         </Box>
         <Button
           variant="contained"
@@ -99,10 +98,6 @@ const HomePage = () => {
             py: 1.5,
             fontSize: '1.2rem',
             boxShadow: '0 8px 32px rgba(255, 107, 107, 0.25)',
-            position: 'absolute',
-            right: { xs: 16, md: 40 },
-            top: { xs: 16, md: 40 },
-            zIndex: 2,
             letterSpacing: 1,
             textTransform: 'uppercase',
             transition: 'box-shadow 0.2s, filter 0.2s',
@@ -112,6 +107,7 @@ const HomePage = () => {
               filter: 'brightness(1.08) drop-shadow(0 0 12px #FF8E53)',
               boxShadow: '0 8px 40px 0 rgba(255, 107, 107, 0.35)',
             },
+            mt: 2
           }}
         >
           ЗАПИС ONLINE
@@ -120,109 +116,56 @@ const HomePage = () => {
 
       {/* Price Section */}
       <Container maxWidth="md" sx={{ my: 6 }}>
-        <Paper sx={{ p: 4, borderRadius: 6, background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 24px rgba(176, 120, 255, 0.10)' }}>
-          <Typography variant="h3" sx={{ textAlign: 'center', fontWeight: 800, mb: 3, color: '#6c47ff' }}>
-            Прайс
-          </Typography>
-          {isMobile ? (
-            <Box>
-              {priceData.map((row, idx) => (
-                <Card key={row.size} sx={{ mb: 2, borderRadius: 3, boxShadow: '0 2px 12px rgba(176,120,255,0.07)' }}>
-                  <CardContent>
-                    <Typography variant="h6" sx={{ color: '#b8c0ff', fontWeight: 700, mb: 1 }}>{row.size}</Typography>
-                    <Divider sx={{ mb: 1 }} />
-                    <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#6c47ff', mb: 1 }}>Нарощення</Typography>
-                    {row.nar.map((item) => (
-                      <Typography key={item.label} variant="body2" sx={{ mb: 0.5 }}>
-                        {item.label} — <b>{item.price}</b>
-                      </Typography>
-                    ))}
-                    <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#6c47ff', mt: 2, mb: 1 }}>Корекція</Typography>
-                    {row.kor.map((item) => (
-                      <Typography key={item.label} variant="body2" sx={{ mb: 0.5 }}>
-                        {item.label} — <b>{item.price}</b>
-                      </Typography>
-                    ))}
-                  </CardContent>
-                </Card>
-              ))}
+        <Typography variant="h3" sx={{ textAlign: 'center', fontWeight: 800, mb: 3, color: '#6c47ff' }}>
+          Прайс
+        </Typography>
+        <Grid container spacing={isMobile ? 2 : 4} justifyContent="center">
+          {priceData.map((row) => (
+            <Box sx={{ width: { xs: '100%', sm: '50%', md: '25%' }, p: 1 }} key={row.size}>
+              <Card sx={{ borderRadius: 4, boxShadow: '0 2px 16px rgba(176,120,255,0.10)', mb: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" sx={{ color: '#b8c0ff', fontWeight: 700, mb: 1, textAlign: 'center' }}>{row.size}</Typography>
+                  <Divider sx={{ mb: 1 }} />
+                  <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#6c47ff', mb: 1, textAlign: 'center' }}>Нарощення</Typography>
+                  {row.nar.map((item) => (
+                    <Typography key={item.label} variant="body2" sx={{ mb: 0.5, textAlign: 'center' }}>
+                      {item.label} — <b>{item.price} грн</b>
+                    </Typography>
+                  ))}
+                  <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#6c47ff', mt: 2, mb: 1, textAlign: 'center' }}>Корекція</Typography>
+                  {row.kor.map((item) => (
+                    <Typography key={item.label} variant="body2" sx={{ mb: 0.5, textAlign: 'center' }}>
+                      {item.label} — <b>{item.price} грн</b>
+                    </Typography>
+                  ))}
+                </CardContent>
+              </Card>
             </Box>
-          ) : (
-            <PriceTable sx={{ boxShadow: 'none', background: 'transparent', m: 0 }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#6c47ff', border: 0 }}></TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#6c47ff', border: 0 }}>Нарощення</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#6c47ff', border: 0 }}>Корекція</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {/* S */}
-                  <TableRow>
-                    <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>S (довжина 1-2)</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 450</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>350</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="center" sx={{ border: 0 }}>З дизайном — 500</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>400</TableCell>
-                  </TableRow>
-                  {/* M */}
-                  <TableRow>
-                    <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>M (довжина 3-4)</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 550</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>450</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="center" sx={{ border: 0 }}>З дизайном — 600</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>500</TableCell>
-                  </TableRow>
-                  {/* L */}
-                  <TableRow>
-                    <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>L (довжина 5-6)</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 650</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>550</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="center" sx={{ border: 0 }}>З дизайном — 700</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>650</TableCell>
-                  </TableRow>
-                  {/* XL */}
-                  <TableRow>
-                    <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>XL (довжина 7+)</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 700</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>600</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="center" sx={{ border: 0 }}>З дизайном — 800</TableCell>
-                    <TableCell align="center" sx={{ border: 0 }}>700</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </PriceTable>
-          )}
-        </Paper>
+          ))}
+        </Grid>
       </Container>
 
       {/* About Section */}
       <Container maxWidth="md" sx={{ my: 6 }}>
-        <Paper sx={{ p: 4, borderRadius: 6, background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 24px rgba(176, 120, 255, 0.10)' }}>
+        <Paper sx={{ p: { xs: 2, md: 4 }, borderRadius: 6, background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 24px rgba(176, 120, 255, 0.10)' }}>
           <Typography variant="h3" sx={{ textAlign: 'center', fontWeight: 800, mb: 3, color: '#6c47ff' }}>
             Про нас
           </Typography>
-          <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: '#6c47ff' }}>
-            Сучасний сервіс, якість і затишок
-          </Typography>
-          <Typography variant="body1" sx={{ color: '#333', fontSize: '1.1rem' }}>
-            Професійний манікюр, індивідуальний підхід, приємна атмосфера та турбота про кожного клієнта. Ми працюємо тільки з якісними матеріалами та дотримуємось усіх стандартів гігієни. Запрошуємо вас у світ краси та гармонії!
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3 }}>
+            <SpaIcon sx={{ fontSize: 90, color: '#b8c0ff', mb: 2 }} />
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: '#6c47ff', textAlign: 'center' }}>
+              Сучасний сервіс, якість і затишок
+            </Typography>
+            <Typography variant="body1" sx={{ color: '#333', fontSize: '1.1rem', textAlign: 'center', maxWidth: 500 }}>
+              Професійний манікюр, індивідуальний підхід, приємна атмосфера та турбота про кожного клієнта. Ми працюємо тільки з якісними матеріалами та дотримуємось усіх стандартів гігієни. Запрошуємо вас у світ краси та гармонії!
+            </Typography>
+          </Box>
         </Paper>
       </Container>
 
       {/* Gallery Section */}
       <Container maxWidth="md" sx={{ my: 6 }}>
-        <Paper sx={{ p: 4, borderRadius: 6, background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 24px rgba(176, 120, 255, 0.10)' }}>
+        <Paper sx={{ p: { xs: 2, md: 4 }, borderRadius: 6, background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 24px rgba(176, 120, 255, 0.10)' }}>
           <Typography variant="h3" sx={{ textAlign: 'center', fontWeight: 800, mb: 3, color: '#6c47ff' }}>
             Галерея робіт
           </Typography>
@@ -232,18 +175,26 @@ const HomePage = () => {
 
       {/* Contacts Section */}
       <Container maxWidth="md" sx={{ my: 6 }}>
-        <Paper sx={{ p: 4, borderRadius: 6, background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 24px rgba(176, 120, 255, 0.10)' }}>
+        <Paper sx={{ p: { xs: 2, md: 4 }, borderRadius: 6, background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 24px rgba(176, 120, 255, 0.10)' }}>
           <Typography variant="h3" sx={{ textAlign: 'center', fontWeight: 800, mb: 3, color: '#6c47ff' }}>
             Контакти
           </Typography>
-          <Typography variant="h6" sx={{ color: '#6c47ff', mb: 1 }}>Адреса</Typography>
-          <Typography variant="body1" sx={{ mb: 2 }}>Прилуки</Typography>
-          <Typography variant="h6" sx={{ color: '#6c47ff', mb: 1 }}>Телефон</Typography>
-          <Typography variant="body1" sx={{ mb: 2 }}>9999999999999</Typography>
-          <Typography variant="h6" sx={{ color: '#6c47ff', mb: 1 }}>Instagram</Typography>
-          <Typography variant="body1" component="a" href="https://instagram.com/your_instagram" target="_blank" rel="noopener noreferrer" sx={{ color: '#6c47ff', textDecoration: 'none', '&:hover': { color: '#b8c0ff' } }}>
-            @9999999999999
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'center', justifyContent: 'center', gap: { xs: 2, md: 6 }, textAlign: 'center', mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'center' }}>
+              <PlaceIcon sx={{ color: '#6c47ff' }} />
+              <Typography variant="body1" sx={{ color: '#333' }}>м.Прилуки</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'center' }}>
+              <PhoneIphoneIcon sx={{ color: '#6c47ff' }} />
+              <Typography variant="body1" sx={{ color: '#333' }}>9999999999999</Typography>
+            </Box>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, textAlign: 'center' }}>
+            <InstagramIcon sx={{ color: '#6c47ff' }} />
+            <Typography variant="body1" component="a" href="https://instagram.com/your_instagram" target="_blank" rel="noopener noreferrer" sx={{ color: '#6c47ff', textDecoration: 'none', '&:hover': { color: '#b8c0ff' } }}>
+              @your_instagram
+            </Typography>
+          </Box>
         </Paper>
       </Container>
 
