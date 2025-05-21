@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, Typography, Button, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme, useMediaQuery, Card, CardContent, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import SpaIcon from '@mui/icons-material/Spa';
 import { useNavigate } from 'react-router-dom';
@@ -15,8 +15,57 @@ const PriceTable = styled(TableContainer)(({ theme }) => ({
   marginBottom: theme.spacing(6),
 }));
 
+const priceData = [
+  {
+    size: 'S (довжина 1-2)',
+    nar: [
+      { label: 'Без дизайну', price: 450 },
+      { label: 'З дизайном', price: 500 },
+    ],
+    kor: [
+      { label: 'Без дизайну', price: 350 },
+      { label: 'З дизайном', price: 400 },
+    ],
+  },
+  {
+    size: 'M (довжина 3-4)',
+    nar: [
+      { label: 'Без дизайну', price: 550 },
+      { label: 'З дизайном', price: 600 },
+    ],
+    kor: [
+      { label: 'Без дизайну', price: 450 },
+      { label: 'З дизайном', price: 500 },
+    ],
+  },
+  {
+    size: 'L (довжина 5-6)',
+    nar: [
+      { label: 'Без дизайну', price: 650 },
+      { label: 'З дизайном', price: 700 },
+    ],
+    kor: [
+      { label: 'Без дизайну', price: 550 },
+      { label: 'З дизайном', price: 650 },
+    ],
+  },
+  {
+    size: 'XL (довжина 7+)',
+    nar: [
+      { label: 'Без дизайну', price: 700 },
+      { label: 'З дизайном', price: 800 },
+    ],
+    kor: [
+      { label: 'Без дизайну', price: 600 },
+      { label: 'З дизайном', price: 700 },
+    ],
+  },
+];
+
 const HomePage = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Box sx={{ minHeight: '100vh', background: gradientBg, pb: 8 }}>
@@ -75,59 +124,84 @@ const HomePage = () => {
           <Typography variant="h3" sx={{ textAlign: 'center', fontWeight: 800, mb: 3, color: '#6c47ff' }}>
             Прайс
           </Typography>
-          <PriceTable sx={{ boxShadow: 'none', background: 'transparent', m: 0 }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#6c47ff', border: 0 }}></TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#6c47ff', border: 0 }}>Нарощення</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#6c47ff', border: 0 }}>Корекція</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {/* S */}
-                <TableRow>
-                  <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>S (довжина 1-2)</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 450</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>350</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center" sx={{ border: 0 }}>З дизайном — 500</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>400</TableCell>
-                </TableRow>
-                {/* M */}
-                <TableRow>
-                  <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>M (довжина 3-4)</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 550</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>450</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center" sx={{ border: 0 }}>З дизайном — 600</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>500</TableCell>
-                </TableRow>
-                {/* L */}
-                <TableRow>
-                  <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>L (довжина 5-6)</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 650</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>550</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center" sx={{ border: 0 }}>З дизайном — 700</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>650</TableCell>
-                </TableRow>
-                {/* XL */}
-                <TableRow>
-                  <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>XL (довжина 7+)</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 700</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>600</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell align="center" sx={{ border: 0 }}>З дизайном — 800</TableCell>
-                  <TableCell align="center" sx={{ border: 0 }}>700</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </PriceTable>
+          {isMobile ? (
+            <Box>
+              {priceData.map((row, idx) => (
+                <Card key={row.size} sx={{ mb: 2, borderRadius: 3, boxShadow: '0 2px 12px rgba(176,120,255,0.07)' }}>
+                  <CardContent>
+                    <Typography variant="h6" sx={{ color: '#b8c0ff', fontWeight: 700, mb: 1 }}>{row.size}</Typography>
+                    <Divider sx={{ mb: 1 }} />
+                    <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#6c47ff', mb: 1 }}>Нарощення</Typography>
+                    {row.nar.map((item) => (
+                      <Typography key={item.label} variant="body2" sx={{ mb: 0.5 }}>
+                        {item.label} — <b>{item.price}</b>
+                      </Typography>
+                    ))}
+                    <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#6c47ff', mt: 2, mb: 1 }}>Корекція</Typography>
+                    {row.kor.map((item) => (
+                      <Typography key={item.label} variant="body2" sx={{ mb: 0.5 }}>
+                        {item.label} — <b>{item.price}</b>
+                      </Typography>
+                    ))}
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
+          ) : (
+            <PriceTable sx={{ boxShadow: 'none', background: 'transparent', m: 0 }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#6c47ff', border: 0 }}></TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#6c47ff', border: 0 }}>Нарощення</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#6c47ff', border: 0 }}>Корекція</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {/* S */}
+                  <TableRow>
+                    <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>S (довжина 1-2)</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 450</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>350</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="center" sx={{ border: 0 }}>З дизайном — 500</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>400</TableCell>
+                  </TableRow>
+                  {/* M */}
+                  <TableRow>
+                    <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>M (довжина 3-4)</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 550</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>450</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="center" sx={{ border: 0 }}>З дизайном — 600</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>500</TableCell>
+                  </TableRow>
+                  {/* L */}
+                  <TableRow>
+                    <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>L (довжина 5-6)</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 650</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>550</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="center" sx={{ border: 0 }}>З дизайном — 700</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>650</TableCell>
+                  </TableRow>
+                  {/* XL */}
+                  <TableRow>
+                    <TableCell rowSpan={2} sx={{ fontWeight: 700, color: '#b8c0ff', border: 0, fontSize: '1.1rem' }}>XL (довжина 7+)</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>Без дизайну — 700</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>600</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="center" sx={{ border: 0 }}>З дизайном — 800</TableCell>
+                    <TableCell align="center" sx={{ border: 0 }}>700</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </PriceTable>
+          )}
         </Paper>
       </Container>
 
